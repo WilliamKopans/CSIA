@@ -41,6 +41,27 @@
             </div>
         </div>
     </section>
+    
+    <div id="newsletter-posts">Loading posts...</div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/rss-parser/dist/rss-parser.min.js"></script>
+    <script>
+        (async () => {
+            let parser = new RSSParser();
+            const CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
+            const feedUrl = `${CORS_PROXY}https://sarikasindhwani.substack.com/feed`; // Replace with actual RSS feed URL
+            try {
+                let feed = await parser.parseURL(feedUrl);
+                document.getElementById('newsletter-posts').innerHTML = feed.items.map(item => 
+                    `<div><h3><a href="${item.link}" target="_blank">${item.title}</a></h3><p>${item.contentSnippet}</p></div>`
+                ).join('');
+            } catch (error) {
+                console.error("Error fetching newsletter posts:", error);
+                document.getElementById('newsletter-posts').innerText = 'Failed to load posts.';
+            }
+        })();
+    </script>
+    
     <section id="contact" style="background-image:url('assets/img/map-image.png');">
         <div class="container">
             <div class="row">
